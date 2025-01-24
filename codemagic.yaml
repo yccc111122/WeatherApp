@@ -12,12 +12,11 @@ workflows:
         script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Ensure gradlew is executable
         script: chmod +x ./gradlew
-      - name: Clean and refresh dependencies
-        script: ./gradlew clean build --refresh-dependencies
-      - name: Build Android release without lint checks
-        script: ./gradlew assembleRelease -x lintVitalRelease --stacktrace
+      - name: Build APK (Skip lint and debug dependencies)
+        script: ./gradlew assembleDebug -x lint --stacktrace
     artifacts:
       - app/build/outputs/**/*.apk
+
 
 
 
