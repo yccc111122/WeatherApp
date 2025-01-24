@@ -12,20 +12,14 @@ workflows:
         script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Ensure gradlew is executable
         script: chmod +x ./gradlew
-      - name: Fix Room schema location
+      - name: Clean project
+        script: ./gradlew clean --stacktrace
+      - name: Refresh dependencies
+        script: ./gradlew --refresh-dependencies
+      - name: Fix Room schema warnings
         script: |
-          echo "android.enableSeparateAnnotationProcessing=true" >> gradle.properties
-          echo "android {
-                  defaultConfig {
-                      javaCompileOptions {
-                          annotationProcessorOptions {
-                              arguments += ['room.schemaLocation': projectDir.path + '/schemas']
-                          }
-                      }
-                  }
-                }" >> app/build.gradle
-      - name: Remove debug-db dependency
-        script: sed -i.bak '/com.amitshekhar.android:debug-db/d' app/build.gradle
+          sed -i.bak '/annotationProcessorOptions {/a\
+              arguments += ["room.schemaLocation": "$CM_BUILD_DIR/schemas"]' app/build.gradle
       - name: Build APK
         script: ./gradlew assembleDebug --stacktrace
     artifacts:
