@@ -9,16 +9,16 @@ workflows:
         JAVA_HOME: /Applications/Android Studio.app/Contents/jre/Contents/Home
     scripts:
       - name: Set Android SDK location
-        script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+        script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Ensure gradlew is executable
         script: chmod +x ./gradlew
-      - name: Install dependencies
-        script: ./gradlew dependencies --stacktrace
+      - name: Clean and refresh dependencies
+        script: ./gradlew clean build --refresh-dependencies
       - name: Build Android release
-        script: ./gradlew assembleRelease
+        script: ./gradlew assembleRelease --stacktrace
     artifacts:
       - app/build/outputs/**/*.apk
+
 
 
 
