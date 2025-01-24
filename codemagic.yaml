@@ -1,6 +1,6 @@
 workflows:
-  native-android:
-    name: Native Android
+  android-workflow:
+    name: Android Build with Fixes
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
@@ -12,10 +12,18 @@ workflows:
         script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Ensure gradlew is executable
         script: chmod +x ./gradlew
-      - name: Remove problematic dependencies
-        script: sed -i.bak '/com.amitshekhar.android:debug-db/d' app/build.gradle
+      - name: Fix WeatherRecyclerAdapter constructor
+        script: |
+          sed -i.bak "s/new WeatherRecyclerAdapter(this)/new WeatherRecyclerAdapter(this, new ArrayList<>(), null, new ArrayList<>())/" app/src/main/java/com/seancoyle/weatherapp/WeatherForecastListActivity.java
+      - name: Fix Room Database warnings
+        script: |
+          echo "android.enableSeparateAnnotationProcessing=true" >> gradle.properties
+          echo "room.schemaLocation=\$projectDir/schemas" >> app/build.gradle
       - name: Build APK
-        script: ./gradlew assembleDebug -x lin
+        script: ./gradlew assembleDebug --stacktrace
+    artifacts:
+      - app/build/outputs/**/*.apk
+
 
 
 
