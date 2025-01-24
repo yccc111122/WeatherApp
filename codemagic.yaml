@@ -1,12 +1,11 @@
 workflows:
-workflows:
   android-workflow:
     name: Build Android Project
     max_build_duration: 60
     environment:
       vars:
         ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT
-        JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64  # 或 Java 11
+        JAVA_HOME: /usr/lib/jvm/java-11-openjdk  # 替换为 Codemagic 提供的路径
     scripts:
       - name: Verify Java version
         script: java -version
@@ -18,7 +17,6 @@ workflows:
         script: ./gradlew assembleDebug --stacktrace
     artifacts:
       - app/build/outputs/**/*.apk
-
 
 
 
