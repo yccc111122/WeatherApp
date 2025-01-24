@@ -1,23 +1,17 @@
 workflows:
+workflows:
   android-workflow:
-    name: Build Weather App
+    name: Build with Gradle 5.6.4
     max_build_duration: 60
-    instance_type: mac_mini_m2
     environment:
       vars:
         ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT
         JAVA_HOME: /Applications/Android Studio.app/Contents/jre/Contents/Home
     scripts:
+      - name: Use Gradle 5.6.4
+        script: ./gradlew wrapper --gradle-version 5.6.4
       - name: Set Android SDK location
         script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
-      - name: Ensure gradlew is executable
-        script: chmod +x ./gradlew
-      - name: Clean project
-        script: ./gradlew clean --stacktrace
-      - name: Refresh dependencies
-        script: ./gradlew --refresh-dependencies
-      - name: Validate Gradle wrapper
-        script: ./gradlew wrapper --gradle-version 5.6.4 --distribution-type all
       - name: Build APK
         script: ./gradlew assembleDebug --stacktrace
     artifacts:
