@@ -12,6 +12,8 @@ workflows:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Ensure gradlew is executable
         script: chmod +x ./gradlew
+      - name: Install dependencies
+        script: ./gradlew dependencies
       - name: Build Android release
         script: ./gradlew bundleRelease
     artifacts:
