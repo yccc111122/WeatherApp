@@ -1,6 +1,6 @@
 workflows:
   android-workflow:
-    name: Weather App Build
+    name: Build Weather App
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
@@ -16,10 +16,8 @@ workflows:
         script: ./gradlew clean --stacktrace
       - name: Refresh dependencies
         script: ./gradlew --refresh-dependencies
-      - name: Fix Room schema warnings
-        script: |
-          sed -i.bak '/annotationProcessorOptions {/a\
-              arguments += ["room.schemaLocation": "$CM_BUILD_DIR/schemas"]' app/build.gradle
+      - name: Validate Gradle wrapper
+        script: ./gradlew wrapper --gradle-version 7.4 --distribution-type all
       - name: Build APK
         script: ./gradlew assembleDebug --stacktrace
     artifacts:
