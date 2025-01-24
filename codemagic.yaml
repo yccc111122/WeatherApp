@@ -17,7 +17,7 @@ workflows:
       - name: Refresh dependencies
         script: ./gradlew --refresh-dependencies
       - name: Validate Gradle wrapper
-        script: ./gradlew wrapper --gradle-version 7.4 --distribution-type all
+        script: ./gradlew wrapper --gradle-version 5.6.4 --distribution-type all
       - name: Build APK
         script: ./gradlew assembleDebug --stacktrace
     artifacts:
