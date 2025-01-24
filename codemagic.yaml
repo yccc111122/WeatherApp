@@ -1,6 +1,6 @@
 workflows:
   android-workflow:
-    name: Android Build with Fixes
+    name: Weather App Build
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
@@ -12,17 +12,20 @@ workflows:
         script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Ensure gradlew is executable
         script: chmod +x ./gradlew
-      - name: Fix WeatherRecyclerAdapter constructor
+      - name: Fix RecyclerAdapter constructor issue
         script: |
           sed -i.bak "s/new WeatherRecyclerAdapter(this)/new WeatherRecyclerAdapter(this, new ArrayList<>(), null, new ArrayList<>())/" app/src/main/java/com/seancoyle/weatherapp/WeatherForecastListActivity.java
-      - name: Fix Room Database warnings
+      - name: Fix Room database warnings
         script: |
           echo "android.enableSeparateAnnotationProcessing=true" >> gradle.properties
           echo "room.schemaLocation=\$projectDir/schemas" >> app/build.gradle
+      - name: Remove debug-db dependency
+        script: sed -i.bak '/com.amitshekhar.android:debug-db/d' app/build.gradle
       - name: Build APK
         script: ./gradlew assembleDebug --stacktrace
     artifacts:
       - app/build/outputs/**/*.apk
+
 
 
 
