@@ -6,18 +6,19 @@ workflows:
     environment:
       vars:
         ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT
+        JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
     scripts:
       - name: Set Android SDK location
-        script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+        script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Ensure gradlew is executable
         script: chmod +x ./gradlew
       - name: Install dependencies
-        script: ./gradlew dependencies
+        script: ./gradlew dependencies --stacktrace
       - name: Build Android release
         script: ./gradlew assembleRelease
     artifacts:
       - app/build/outputs/**/*.apk
+
 
 
 
