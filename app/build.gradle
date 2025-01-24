@@ -52,7 +52,7 @@ dependencies {
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.0.0"
 
     // Shows Sqlite Database in Browser.
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    //debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
     // Reactive Streams (convert Observable to LiveData)
     def reactivestreams_version = "1.1.1"
