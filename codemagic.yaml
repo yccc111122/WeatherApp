@@ -16,8 +16,12 @@ workflows:
         script: ./gradlew clean build --refresh-dependencies
       - name: Build Android release
         script: ./gradlew assembleRelease --stacktrace
+      - name: Build Debug APK
+        script: ./gradlew assembleDebug --stacktrace
     artifacts:
       - app/build/outputs/**/*.apk
+      - app/build/outputs/**/*.aab
+
 
 
 
