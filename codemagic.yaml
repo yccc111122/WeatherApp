@@ -5,15 +5,20 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       vars:
-        PACKAGE_NAME: "io.codemagic.sample.androidnative"
+        JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
+        ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT
     scripts:
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Ensure gradlew is executable
         script: chmod +x ./gradlew
+      - name: Check Gradle version
+        script: ./gradlew --version
+      - name: Update Gradle Wrapper (if needed)
+        script: ./gradlew wrapper --gradle-version 7.5
       - name: Install dependencies
-        script: ./gradlew dependencies
+        script: ./gradlew dependencies --stacktrace
       - name: Build Android release
         script: ./gradlew bundleRelease
     artifacts:
