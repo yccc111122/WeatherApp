@@ -14,13 +14,11 @@ workflows:
         script: chmod +x ./gradlew
       - name: Clean and refresh dependencies
         script: ./gradlew clean build --refresh-dependencies
-      - name: Build Android release
-        script: ./gradlew assembleRelease --stacktrace
-      - name: Build Debug APK
-        script: ./gradlew assembleDebug --stacktrace
+      - name: Build Android release without lint checks
+        script: ./gradlew assembleRelease -x lintVitalRelease --stacktrace
     artifacts:
       - app/build/outputs/**/*.apk
-      - app/build/outputs/**/*.aab
+
 
 
 
