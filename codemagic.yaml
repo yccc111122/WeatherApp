@@ -1,12 +1,9 @@
-
 workflows:
   native-android:
-    name: Chen Yulin Assignment
+    name: Native Android
     max_build_duration: 120
     instance_type: mac_mini_m2
     environment:
-      android_signing:
-        - keystore_reference
       vars:
         PACKAGE_NAME: "io.codemagic.sample.androidnative"
     scripts:
@@ -18,3 +15,4 @@ workflows:
           ./gradlew bundleRelease
     artifacts:
       - app/build/outputs/**/*.aab
+
